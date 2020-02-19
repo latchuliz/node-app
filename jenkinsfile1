@@ -6,8 +6,15 @@ pipeline{
 	stages{
 		stage('Build Docker Image'){
 			steps{
-				sh "docker build . -t latchu/nodeapp:${DOCKER_TAG}"
+				sh "docker build . -t latchudocker/nodeapp:${DOCKER_TAG}"
 			}
+		}
+		stage('DockerHub Push'){
+			withCredentials([string(credentialsId: 'Docker-PWD', variable: 'DockerHubPWD')]) {
+				sh "docker login -u latchudocker -p ${dockerhubpwd}"
+				sh "docker push latchudocker/nodeapp:${DOCKER_TAG}"
+			}
+
 		}
 	}
 }
