@@ -10,11 +10,12 @@ pipeline{
 			}
 		}
 		stage('DockerHub Push'){
+			steps{
 			withCredentials([string(credentialsId: 'Docker-PWD', variable: 'DockerHubPWD')]) {
 				sh "docker login -u latchudocker -p ${dockerhubpwd}"
 				sh "docker push latchudocker/nodeapp:${DOCKER_TAG}"
+				}
 			}
-
 		}
 	}
 }
